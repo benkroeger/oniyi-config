@@ -1,0 +1,8 @@
+{
+  "foo": {
+    "providers.development.json": true
+  },
+  "bar": {
+    "providers.development.json": true
+  }
+}
