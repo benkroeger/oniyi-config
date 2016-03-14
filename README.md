@@ -22,7 +22,7 @@ const cfg = oniyiConfig({
 
 will merge `js`and `json` files starting with name  `providers` in `${appRootDir}/authentication`
 iteratively. File name schema is **providers.[environment].(json|js)**.  
-`environment` is optional. Possible values are anything you can set in `process.env.NODE_ENV`.
+`environment` is optional and defaults to 'development'. Possible values are anything you can set in `process.env.NODE_ENV`.
 For file name resolution, `process.env.NODE_ENV` will be transformed to lower-case.  
 One special environment is `local`. It will always be loaded **last**.  
 It is okay to provide the same file name with different extensions. `json` will always be loaded before
