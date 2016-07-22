@@ -1,16 +1,18 @@
 'use strict';
 
-const assert = require('assert');
-const path = require('path');
-const _ = require('lodash');
-const oniyiConfig = require('../lib');
+import path from 'path';
+import test from 'ava';
+import _ from 'lodash';
+import oniyiConfig from '../lib/index.js';
 
-describe('sample configuration files with base name "providers"', () => {
+test('sample configuration files with base name "providers"', t => {
+  t.plan(14);
+
   const baseName = 'providers';
   const environment = 'development';
 
   const cfgs = oniyiConfig({
-    basePath: path.join(__dirname, 'config-files'),
+    basePath: path.join(__dirname, 'helpers', 'config-files'),
     baseName,
     environment,
   });
@@ -19,25 +21,15 @@ describe('sample configuration files with base name "providers"', () => {
   ['foo', 'bar']
   .forEach((topKey) => {
     const cfg = cfgs[topKey];
-    describe(`top level config object "${topKey}"`, () => {
-      it('should be plain object', () => {
-        assert(_.isPlainObject(cfg), 'only plain objects are allowed for configs');
-      });
+    t.true(_.isPlainObject(cfg), 'only plain objects are allowed for configs');
 
-      ['', environment, 'local'].map((env) => {
-        return ['json', 'js'].map((ext) => {
-          if (env) {
-            return `${baseName}.${env}.${ext}`;
-          }
-          return `${baseName}.${ext}`;
-        });
-      }).reduce((result, current) => {
-        return result.concat(current);
-      }, []).forEach((cfgKey) => {
-        it(`should set ${cfgKey} in config object ${topKey}`, () => {
-          assert(cfg[cfgKey], 'must be truthy value');
-        });
-      });
+    ['', environment, 'local'].map((env) => ['json', 'js'].map((ext) => {
+      if (env) {
+        return `${baseName}.${env}.${ext}`;
+      }
+      return `${baseName}.${ext}`;
+    })).reduce((result, current) => result.concat(current), []).forEach((cfgKey) => {
+      t.truthy(cfg[cfgKey], 'must be truthy value');
     });
   });
 });

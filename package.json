@@ -2,41 +2,44 @@
   "name": "oniyi-config",
   "version": "0.0.1",
   "description": "Simple config file loader",
-  "homepage": "",
+  "license": "MIT",
+  "private": false,
   "author": {
     "name": "Benjamin Kroeger",
     "email": "benjamin.kroeger@gmail.com",
     "url": ""
   },
-  "files": [
-    "lib"
-  ],
   "main": "lib/index.js",
   "keywords": [
     "oniyi",
     "config",
     "loader"
   ],
-  "dependencies": {
-    "lodash": "^4.6.1",
-    "oniyi-logger": "^0.4.0"
-  },
-  "devDependencies": {
-    "eslint": "^1.10.3",
-    "eslint-config-oniyi": "^1.1.2",
-    "gulp": "^3.9.0",
-    "gulp-eslint": "^1.0.0",
-    "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-istanbul": "^0.10.3",
-    "gulp-mocha": "^2.0.0",
-    "gulp-plumber": "^1.0.0",
-    "gulp-nsp": "^2.1.0",
-    "gulp-coveralls": "^0.1.0"
-  },
   "repository": "benkroeger/oniyi-config",
   "scripts": {
-    "prepublish": "gulp prepublish",
-    "test": "gulp"
+    "lint": "eslint .",
+    "test": "ava",
+    "test:watch": "npm test -- --watch",
+    "preversion": "npm run lint && npm run coverage",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage.lcov"
   },
-  "license": "MIT"
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "homepage": "",
+  "files": [
+    "lib/"
+  ],
+  "dependencies": {
+    "lodash": "^4.6.1",
+    "oniyi-logger": "0.4.2"
+  },
+  "devDependencies": {
+    "ava": "0.15.2",
+    "babel-eslint": "6.1.2",
+    "eslint": "3.0.1",
+    "eslint-config-oniyi": "4.0.0",
+    "eslint-plugin-ava": "2.5.0",
+    "nyc": "7.0.0"
+  }
 }
