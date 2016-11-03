@@ -1,4 +1,4 @@
-# oniyi-config [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# oniyi-config [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Simple config file loader
 
 ## Installation
@@ -13,20 +13,18 @@ $ npm install --save oniyi-config
 const oniyiConfig = require('oniyi-config');
 
 const cfg = oniyiConfig({
-  basePath: __dirname,
-  module: 'providers',
-  forceReload: true,
+  sourceDir: __dirname,
+  baseName: 'providers',
   environment: 'production',
   });
 ```
 
-will merge `js`and `json` files starting with name  `providers` in `${appRootDir}/authentication`
-iteratively. File name schema is **providers.[environment].(json|js)**.  
-`environment` is optional and defaults to 'development'. Possible values are anything you can set in `process.env.NODE_ENV`.
-For file name resolution, `process.env.NODE_ENV` will be transformed to lower-case.  
-One special environment is `local`. It will always be loaded **last**.  
-It is okay to provide the same file name with different extensions. `json` will always be loaded before
-`js`, meaning `js` **will overwrite** `json`
+will merge `js`and `json` files starting with name  `providers` in `__dirname`
+iteratively. File name schema is `providers.[environment].(json|js)`.
+
+`environment` is optional and defaults to `development`. Possible values are anything you can set in `process.env.NODE_ENV`. For file name resolution, `process.env.NODE_ENV` will be transformed to lower-case.
+
+One special environment is `local`. It will always be loaded **last**. You can provide the same file name with different extensions. `json` will always be loaded before `js`, meaning `js` **will overwrite** `json`
 
 Sample load order:
 1. providers.json
@@ -35,11 +33,17 @@ Sample load order:
 4. providers.development.js
 5. providers.local.json
 6. providers.local.js
-7. 
+
+### Options
+
+* **sourceDir**, baseDir, basePath: single directory path to load config files from
+* **sourceDirs**: array of directory paths to load config files from. Files are loaded in preceding order (meaning the last one is loaded first extended with `_.mergeWith()` in reverse order; as `customizer` for `_.mergeWith()`, a custom function from `lib/utils.js` is used)
+* **baseName**: the baseName for config files (e.g. `providers` from the example above)
+* **env**, environment: the `environment` part of config file names (e.g. `development` from the example above) *Note*: `local` is always added / loaded
+
 ## License
 
 MIT © [Benjamin Kroeger]()
-
 
 [npm-image]: https://badge.fury.io/js/oniyi-config.svg
 [npm-url]: https://npmjs.org/package/oniyi-config
