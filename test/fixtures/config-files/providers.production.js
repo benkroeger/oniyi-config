@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   foo: {
     'providers.production.js': true,
