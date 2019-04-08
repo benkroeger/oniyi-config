@@ -31,7 +31,7 @@
     "lib/"
   ],
   "dependencies": {
-    "lodash": "4.15.0",
+    "lodash": "4.17.11",
     "oniyi-logger": "1.0.0",
     "oniyi-utils": "1.1.1"
   },
