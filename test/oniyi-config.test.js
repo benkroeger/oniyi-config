@@ -3,7 +3,7 @@ import path from 'path';
 import test from 'ava';
 import oniyiConfig from '../lib';
 
-test('without baseName param', t => {
+test('without baseName param', (t) => {
   function runner() {
     oniyiConfig({});
   }
@@ -11,7 +11,7 @@ test('without baseName param', t => {
   t.throws(runner, TypeError, 'without baseName param');
 });
 
-test('with invalid sourceDirs param', t => {
+test('with invalid sourceDirs param', (t) => {
   function runner() {
     oniyiConfig({
       baseName: 'config',
@@ -22,7 +22,7 @@ test('with invalid sourceDirs param', t => {
   t.throws(runner, TypeError, 'with invalid sourceDirs param');
 });
 
-test('load config from single sourceDir', t => {
+test('load config from single sourceDir', (t) => {
   const config = oniyiConfig({
     baseName: 'providers',
     sourceDir: path.resolve(__dirname, 'fixtures', 'config-files'),

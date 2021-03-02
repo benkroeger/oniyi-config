@@ -13,7 +13,7 @@ const {
   loadConfig,
 } = utils;
 
-test('makeFilenameRegex() throws when called with non-string arg', t => {
+test('makeFilenameRegex() throws when called with non-string arg', (t) => {
   function throwing() {
     makeFilenameRegex(null);
   }
@@ -21,74 +21,74 @@ test('makeFilenameRegex() throws when called with non-string arg', t => {
   t.throws(throwing, TypeError, 'only string args are allowed');
 });
 
-test('makeFilenameRegex() returns regular expression that tests truthy for all file name patterns', t => {
+test('makeFilenameRegex() returns regular expression that tests truthy for all file name patterns', (t) => {
   const baseName = 'config';
   const fileNames = 'json js development.json development.js local.json local.js'
     .split(' ')
-    .map(item => `${baseName}.${item}`);
+    .map((item) => `${baseName}.${item}`);
 
   const rex = makeFilenameRegex(baseName);
   t.true(
-    fileNames.every(item => rex.test(item)),
+    fileNames.every((item) => rex.test(item)),
     `RegEx should test truthy for ${fileNames}`,
   );
 });
 
-test('isDirectory() returns true for existing directories', t => {
+test('isDirectory() returns true for existing directories', (t) => {
   t.true(isDirectory(__dirname), `"${__dirname}" seems to not be a directory`);
 });
 
-test('isDirectory() returns false for non-existing directories', t => {
+test('isDirectory() returns false for non-existing directories', (t) => {
   const dirPath = path.resolve(__dirname, 'foo');
   t.false(isDirectory(dirPath), `"${dirPath}" seems to be a directory`);
 });
 
-test('isFile() returns true for existing files', t => {
+test('isFile() returns true for existing files', (t) => {
   t.true(isFile(__filename), `"${__filename}" seems to not be a file`);
 });
 
-test('isFile() returns false for non-existing files', t => {
+test('isFile() returns false for non-existing files', (t) => {
   const filePath = path.resolve(__dirname, 'foo');
   t.false(isFile(filePath), `"${filePath}" seems to be a file`);
 });
 
-test('toLowerCase() returns non-string args unmodified', t => {
+test('toLowerCase() returns non-string args unmodified', (t) => {
   const input = 1;
   const output = toLowerCase(input);
   t.true(input === output, 'input does not equal output');
 });
 
-test('toLowerCase() returns lower-case string', t => {
+test('toLowerCase() returns lower-case string', (t) => {
   const input = 'FOO';
   const output = toLowerCase(input);
   t.true(input.toLowerCase() === output, 'input does not equal output');
 });
 
-test('mergeObjects() two plain objects', t => {
+test('mergeObjects() two plain objects', (t) => {
   const src = {};
   const obj = {};
   t.is(mergeObjects(obj, src), undefined);
 });
 
-test('mergeObjects() obj arg === null', t => {
+test('mergeObjects() obj arg === null', (t) => {
   const src = 'foo';
   const obj = null;
   t.is(mergeObjects(obj, src), src);
 });
 
-test('mergeObjects() obj arg === undefined', t => {
+test('mergeObjects() obj arg === undefined', (t) => {
   const src = {};
   const obj = undefined;
   t.is(mergeObjects(obj, src), src);
 });
 
-test('mergeObjects() src arg === false', t => {
+test('mergeObjects() src arg === false', (t) => {
   const src = false;
   const obj = {};
   t.is(mergeObjects(obj, src), src);
 });
 
-test('mergeObjects() two arrays', t => {
+test('mergeObjects() two arrays', (t) => {
   const src = [1, 2, 3];
   const obj = [3, 4, 5];
 
@@ -100,21 +100,21 @@ test('mergeObjects() two arrays', t => {
   t.true(isUnionedArray);
 });
 
-test('mergeObjects() src.prototype is not `Object`', t => {
+test('mergeObjects() src.prototype is not `Object`', (t) => {
   const src = new Date();
   const obj = {};
 
   t.is(mergeObjects(obj, src), src);
 });
 
-test('mergeObjects() src is undefined', t => {
+test('mergeObjects() src is undefined', (t) => {
   const src = undefined;
   const obj = 'foo';
 
   t.is(mergeObjects(obj, src), undefined);
 });
 
-test('loadConfig() returns empty object when `dir` param is not a directory', t => {
+test('loadConfig() returns empty object when `dir` param is not a directory', (t) => {
   const baseName = 'providers';
   const environment = 'development';
   const cfgs = loadConfig({
@@ -127,7 +127,7 @@ test('loadConfig() returns empty object when `dir` param is not a directory', t 
 });
 
 /* eslint-disable ava/no-skip-test */
-test.skip('sample configuration files with base name "providers"', t => {
+test.skip('sample configuration files with base name "providers"', (t) => {
   t.plan(14);
 
   const baseName = 'providers';
@@ -138,14 +138,14 @@ test.skip('sample configuration files with base name "providers"', t => {
     dir: path.join(__dirname, 'fixtures', 'config-files'),
   });
 
-  ['foo', 'bar'].forEach(topKey => {
+  ['foo', 'bar'].forEach((topKey) => {
     const cfg = cfgs[topKey];
     t.true(_.isPlainObject(cfg), 'only plain objects are allowed for configs');
 
     ['', environment, 'local']
-      .map(item => item.toLowerCase())
-      .map(env =>
-        ['json', 'js'].map(ext => {
+      .map((item) => item.toLowerCase())
+      .map((env) =>
+        ['json', 'js'].map((ext) => {
           if (env) {
             return `${baseName}.${env}.${ext}`;
           }
@@ -153,7 +153,7 @@ test.skip('sample configuration files with base name "providers"', t => {
         }),
       )
       .reduce((result, current) => result.concat(current), [])
-      .forEach(cfgKey => {
+      .forEach((cfgKey) => {
         t.truthy(cfg[cfgKey], 'must be truthy value');
       });
   });
